@@ -1,10 +1,14 @@
 ﻿using System.Text.Json.Serialization;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using lms_data;
 using lms_data.Repositories;
 using lms_service.Implementations;
 using lms_service.Interfaces;
 using lms_service.Mappings;
+using lms_service.Middleware;
 using lms_service.Profiles;
+using lms_service.Validators;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,6 +45,13 @@ builder.Services.AddAutoMapper(typeof(BookProfile));
 builder.Services.AddAutoMapper(typeof(MemberProfile));
 builder.Services.AddAutoMapper(typeof(BorrowRecordProfile));
 
+//validators
+builder.Services.AddFluentValidationAutoValidation();
+
+builder.Services.AddValidatorsFromAssemblyContaining<MemberValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<BookValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<BorrowRequestValidator>();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -59,6 +70,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();
 

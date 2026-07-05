@@ -13,6 +13,8 @@
     <None Remove="Implementations\" />
     <None Remove="Mappings\" />
     <None Remove="Profiles\" />
+    <None Remove="Validators\" />
+    <None Remove="Middleware\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
@@ -20,8 +22,13 @@
     <Folder Include="Implementations\" />
     <Folder Include="Mappings\" />
     <Folder Include="Profiles\" />
+    <Folder Include="Validators\" />
+    <Folder Include="Middleware\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\lms-data\lms-data.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
   </ItemGroup>
 </Project>
