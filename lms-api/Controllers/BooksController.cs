@@ -2,12 +2,14 @@
 using lms_data;
 using lms_service.Interfaces;
 using lms_service.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace lms_api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class BooksController : ControllerBase
     {
         private readonly IBookService _bookService;
@@ -29,7 +31,7 @@ namespace lms_api.Controllers
             return Ok(book);
         }
 
-
+        [Authorize(Policy = "CanManageBooks")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Book book)
         {
@@ -45,7 +47,7 @@ namespace lms_api.Controllers
             return NoContent();
         }
 
-
+        [Authorize(Policy = "AdminOnly")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

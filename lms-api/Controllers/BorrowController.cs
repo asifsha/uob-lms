@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Data;
 using lms_service.Implementations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static lms_service.Implementations.IBorrowService;
 
@@ -7,6 +9,7 @@ namespace lms_api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Policy = "CanBorrowBooks")]
     public class BorrowController : ControllerBase
     {
         private readonly IBorrowService borrowService;
@@ -31,6 +34,7 @@ namespace lms_api.Controllers
             return Ok(loan);
         }
 
+        [Authorize(Policy = "CanBorrowBooks")]
         [HttpPost("borrow")]
         public async Task<IActionResult> Borrow(int bookId, int memberId)
         {

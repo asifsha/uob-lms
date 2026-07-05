@@ -14,6 +14,7 @@ namespace lms_data
         public DbSet<MemberEntity> Members { get; set; }
         public DbSet<LibraryEntity> Libraries { get; set; }
         public DbSet<BorrowRecordEntity> BorrowRecords { get; set; }
+        public DbSet<UserEntity> Users => Set<UserEntity>();
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
