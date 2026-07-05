@@ -1,4 +1,6 @@
 ﻿using System;
+using AutoMapper;
+using lms_api.Models.Requests;
 using lms_data;
 using lms_service.Interfaces;
 using lms_service.Models;
@@ -13,9 +15,11 @@ namespace lms_api.Controllers
     public class BooksController : ControllerBase
     {
         private readonly IBookService _bookService;
-        public BooksController(IBookService bookService)
+        private readonly IMapper _mapper;
+        public BooksController(IBookService bookService, IMapper mapper)
         {
             _bookService = bookService;
+            _mapper = mapper;
         }
 
 
@@ -33,16 +37,18 @@ namespace lms_api.Controllers
 
         [Authorize(Policy = "CanManageBooks")]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Book book)
+        public async Task<IActionResult> Create([FromBody] BookRequest request)
         {
+            var book = _mapper.Map<Book>(request);
             var created = await _bookService.CreateAsync(book);
             return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
         }
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] Book book)
+        public async Task<IActionResult> Update(int id, [FromBody] BookRequest request)
         {
+            var book = _mapper.Map<Book>(request);
             await _bookService.UpdateAsync(id, book);
             return NoContent();
         }

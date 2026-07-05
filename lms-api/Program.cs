@@ -17,6 +17,7 @@ using lms_service.Helpers;
 using Microsoft.OpenApi.Models;
 using lms_data.Entities;
 using Microsoft.AspNetCore.Identity;
+using lms_api.Profiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,6 +84,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddAutoMapper(typeof(BookProfile));
 builder.Services.AddAutoMapper(typeof(MemberProfile));
 builder.Services.AddAutoMapper(typeof(BorrowRecordProfile));
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 //validators
 builder.Services.AddFluentValidationAutoValidation();

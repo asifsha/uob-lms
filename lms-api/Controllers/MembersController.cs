@@ -1,4 +1,6 @@
 ﻿using System;
+using AutoMapper;
+using lms_api.Models.Requests;
 using lms_data.Entities;
 using lms_service.Interfaces;
 using lms_service.Models;
@@ -11,10 +13,12 @@ namespace lms_api.Controllers
     public class MembersController : ControllerBase
     {
         private readonly IMemberService _memberService;
+        private readonly IMapper _mapper;
 
-        public MembersController(IMemberService memberService)
+        public MembersController(IMemberService memberService, IMapper mapper)
         {
             _memberService = memberService;
+            _mapper = mapper;
         }
 
         // GET: api/members
@@ -37,16 +41,18 @@ namespace lms_api.Controllers
 
         // POST: api/members
         [HttpPost]
-        public async Task<IActionResult> Create(Member member)
+        public async Task<IActionResult> Create(MemberRequest request)
         {
+            var member = _mapper.Map<Member>(request);
             var created = await _memberService.CreateAsync(member);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
         // PUT: api/members/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Member member)
+        public async Task<IActionResult> Update(int id, MemberRequest request)
         {
+            var member = _mapper.Map<Member>(request);
             await _memberService.UpdateAsync(id, member);
             return NoContent();
         }
