@@ -9,10 +9,11 @@ namespace lms_api_tests
 	{
         public static async Task AuthenticateAsync(HttpClient client, string role)
         {
+            var username = $"user-{Guid.NewGuid():N}";
             // ---------------- REGISTER ----------------
             var register = new
             {
-                username = "testuser",
+                username = username,
                 password = "123456",
                 role = role
             };
@@ -22,7 +23,7 @@ namespace lms_api_tests
 
             var login = new
             {
-                username = "testuser",
+                username = username,
                 password = "123456"
             };
 
