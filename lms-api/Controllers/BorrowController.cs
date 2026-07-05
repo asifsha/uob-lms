@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using lms_api.Models.Requests;
 using lms_service.Implementations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,11 +37,11 @@ namespace lms_api.Controllers
 
         [Authorize(Policy = "CanBorrowBooks")]
         [HttpPost("borrow")]
-        public async Task<IActionResult> Borrow(int bookId, int memberId)
+        public async Task<IActionResult> Borrow([FromBody] BorrowRequest request)
         {
             try
             {
-                var loan = await borrowService.BorrowBookAsync(bookId, memberId);
+                var loan = await borrowService.BorrowBookAsync(request.BookId, request.MemberId);
                 return CreatedAtAction(nameof(GetById), new { id = loan.Id }, loan);
             }
             catch (Exception ex)
